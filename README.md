@@ -38,11 +38,10 @@ $ git push origin <your-branch-name>
 --------------------------------------
 
 
-### Running Applucation
+### Running Application
 
-- BUild the docker Container
-- Migrate Database
-- Exceute the query.sql file using any msql client or access phpmyadmin at localhost:8080
+- Build the docker Container
+- Access phpmyadmin at localhost:8080 (Username - root, password-root)
 - Login into the system using Login endpoint
 - While providing any status or choice type access the data beforehand using api endpoint
 - You have the control over system
@@ -70,26 +69,6 @@ $ docker-compose -f docker-compose.yml start
 $ docker-compose -f docker-compose.yml restart
 ```
 ---
-# Note:-
-
-- Before migrating, add the import model statement in models_import.py file
----
-
-### Init the database to docker
-```shell
-$ docker-compose -f docker-compose.yml run app python manage.py db init
-```
-
-### Migrating the database to docker
-```shell
-$ docker-compose -f docker-compose.yml run app python manage.py db migrate -m "message"
-```
-
-### Upgrading the database to docker
-```shell
-$ docker-compose -f docker-compose.yml run app python manage.py db upgrade heads
-```
----
 
 ### Installing package(s) from requirements using pip in docker
 
@@ -101,18 +80,6 @@ $ docker-compose -f docker-compose.yml run app pip install -r requirements.txt
 
 ```shell
 $ docker-compose -f docker-compose.yml run app pip install <package-name>
-```
-
----
-
-### Problem in Migrations ?
-```shell
-1. Delete the Migration directory
-2. Delete entried from alembic_version table in database.
-3. $ docker-compose -f docker-compose.yml run app python manage.py db init
-4. $ docker-compose -f docker-compose.yml run app python manage.py db migrate -m "message"
-5. $ docker-compose -f docker-compose.yml run app python manage.py db upgrade heads
-
 ```
 
 ---
