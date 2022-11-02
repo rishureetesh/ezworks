@@ -264,7 +264,7 @@ def create_database():
         data = db.session.execute("select id from EZ_user_types").fetchall()
         if not data or data is None:
             db.session.execute("""
-            INSERT INTO `EZ_user_types` (`id`, `name`) VALUES (1, "client"), (2, "operations")
+            INSERT INTO `EZ_user_types` (`id`, `name`) VALUES (1, "client"), (2, "operation")
             """)
     except Exception as e:
         db.session.rollback()
