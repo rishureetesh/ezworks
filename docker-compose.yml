@@ -1,0 +1,62 @@
+version: "3.8"
+
+services:
+  # database mysql configuration
+   db:
+      build:
+         context: ./db
+         dockerfile: Dockerfile
+      command: '--default-authentication-plugin=mysql_native_password'
+      container_name: "MySQL_Database"
+      ports:
+         - "3307:3306"
+      restart: always
+      environment:
+         MYSQL_ROOT_PASSWORD: root
+      volumes:
+         - ./db:/data/db
+      networks:
+         - ezworks
+   
+   # flask API configuration
+   app:
+      build:
+         context: .
+         dockerfile: docker/Dockerfile
+      container_name: "ez_backend"
+      restart: always
+      volumes:
+         - ".:/usr/src/app"
+      environment:
+         - FLASK_DEBUG=1
+         - APP_SETTINGS=project.config.DevelopmentConfig
+         - DATABASE_URL=mysql+pymysql://root:root@db:3306/ezworks?charset=utf8mb4
+      env_file:
+         - .env.local
+      ports:
+         - "5001:5000"
+      networks:
+         - ezworks
+   
+   # php-admin configuration
+   phpmyadmin:
+      links:
+         - db
+      depends_on:
+         - db
+      image: phpmyadmin/phpmyadmin
+      container_name: "phpadmin"
+      restart: always
+      ports:
+         - '8080:80'
+      environment:
+         PMA_HOST: db
+         MYSQL_ROOT_PASSWORD: root
+      networks:
+         - ezworks
+
+networks:
+  ezworks:
+
+volumes:
+  db:
